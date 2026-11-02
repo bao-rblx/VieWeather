@@ -1,0 +1,191 @@
+[
+  {
+    "id": "hanoi",
+    "name": "Hanoi",
+    "region": "North",
+    "lat": 21.0285,
+    "lon": 105.8542
+  },
+  {
+    "id": "ha-giang",
+    "name": "Ha Giang",
+    "region": "North",
+    "lat": 22.8233,
+    "lon": 104.9836
+  },
+  {
+    "id": "lao-cai",
+    "name": "Lao Cai",
+    "region": "North",
+    "lat": 22.4809,
+    "lon": 103.9755
+  },
+  {
+    "id": "dien-bien",
+    "name": "Dien Bien Phu",
+    "region": "North",
+    "lat": 21.386,
+    "lon": 103.023
+  },
+  {
+    "id": "son-la",
+    "name": "Son La",
+    "region": "North",
+    "lat": 21.327,
+    "lon": 103.918
+  },
+  {
+    "id": "cao-bang",
+    "name": "Cao Bang",
+    "region": "North",
+    "lat": 22.666,
+    "lon": 106.258
+  },
+  {
+    "id": "lang-son",
+    "name": "Lang Son",
+    "region": "North",
+    "lat": 21.8537,
+    "lon": 106.7615
+  },
+  {
+    "id": "hai-phong",
+    "name": "Hai Phong",
+    "region": "North",
+    "lat": 20.8449,
+    "lon": 106.6881
+  },
+  {
+    "id": "ha-long",
+    "name": "Ha Long",
+    "region": "North",
+    "lat": 20.9505,
+    "lon": 107.0734
+  },
+  {
+    "id": "ninh-binh",
+    "name": "Ninh Binh",
+    "region": "North",
+    "lat": 20.2506,
+    "lon": 105.9745
+  },
+  {
+    "id": "thanh-hoa",
+    "name": "Thanh Hoa",
+    "region": "Central",
+    "lat": 19.8075,
+    "lon": 105.7764
+  },
+  {
+    "id": "vinh",
+    "name": "Vinh",
+    "region": "Central",
+    "lat": 18.6796,
+    "lon": 105.6813
+  },
+  {
+    "id": "dong-hoi",
+    "name": "Dong Hoi",
+    "region": "Central",
+    "lat": 17.4689,
+    "lon": 106.6223
+  },
+  {
+    "id": "hue",
+    "name": "Hue",
+    "region": "Central",
+    "lat": 16.4637,
+    "lon": 107.5909
+  },
+  {
+    "id": "da-nang",
+    "name": "Da Nang",
+    "region": "Central",
+    "lat": 16.0544,
+    "lon": 108.2022
+  },
+  {
+    "id": "quy-nhon",
+    "name": "Quy Nhon",
+    "region": "Central",
+    "lat": 13.782,
+    "lon": 109.219
+  },
+  {
+    "id": "pleiku",
+    "name": "Pleiku",
+    "region": "Highlands",
+    "lat": 13.9833,
+    "lon": 108
+  },
+  {
+    "id": "buon-ma-thuot",
+    "name": "Buon Ma Thuot",
+    "region": "Highlands",
+    "lat": 12.6667,
+    "lon": 108.05
+  },
+  {
+    "id": "nha-trang",
+    "name": "Nha Trang",
+    "region": "Central",
+    "lat": 12.2388,
+    "lon": 109.1967
+  },
+  {
+    "id": "da-lat",
+    "name": "Da Lat",
+    "region": "Highlands",
+    "lat": 11.9404,
+    "lon": 108.4583
+  },
+  {
+    "id": "hcmc",
+    "name": "Ho Chi Minh City",
+    "region": "South",
+    "lat": 10.8231,
+    "lon": 106.6297
+  },
+  {
+    "id": "vung-tau",
+    "name": "Vung Tau",
+    "region": "South",
+    "lat": 10.4114,
+    "lon": 107.1362
+  },
+  {
+    "id": "can-tho",
+    "name": "Can Tho",
+    "region": "South",
+    "lat": 10.0452,
+    "lon": 105.7469
+  },
+  {
+    "id": "ca-mau",
+    "name": "Ca Mau",
+    "region": "South",
+    "lat": 9.1768,
+    "lon": 105.1524
+  },
+  {
+    "id": "phu-quoc",
+    "name": "Phu Quoc",
+    "region": "South",
+    "lat": 10.2899,
+    "lon": 103.984
+  },
+  {
+    "id": "hoang-sa",
+    "name": "Hoàng Sa",
+    "region": "Islands",
+    "lat": 16.535,
+    "lon": 111.61
+  },
+  {
+    "id": "truong-sa",
+    "name": "Trường Sa",
+    "region": "Islands",
+    "lat": 8.645,
+    "lon": 111.92
+  }
+]
