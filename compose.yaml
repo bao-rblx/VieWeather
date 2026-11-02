@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    ports:
+      - "127.0.0.1:8010:8000"
+    environment:
+      WEATHER_MODE: ${WEATHER_MODE:-live}
+      DATA_DIR: /data
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+  spark:
+    image: apache/spark:3.5.3
+    profiles: [streaming]
+    user: "0:0"
+    environment:
+      DATA_DIR: /data
+      SPARK_LOCAL_IP: 127.0.0.1
+      SPARK_SHUFFLE_PARTITIONS: "4"
+    volumes:
+      - ./data:/data
+      - ./pipeline:/opt/vieweather:ro
+    ports:
+      - "127.0.0.1:4040:4040"
+    entrypoint: ["/opt/spark/bin/spark-submit"]
+    command: ["--master", "local[2]", "--driver-memory", "2g", "/opt/vieweather/stream.py"]
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped

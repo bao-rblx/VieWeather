@@ -1,0 +1,21 @@
+node_modules/
+dist/
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+data/
+*.log
+artifacts/
+*.tsbuildinfo
+.ruff_cache/
+
+# local screenshot captures from scripts/shoot.cjs
+shots/
+
+# generated reports and slide decks
+output/
+.tmp-build/
+
+# local publishing helper, not part of the project
+scripts/_push_waves.ps1
