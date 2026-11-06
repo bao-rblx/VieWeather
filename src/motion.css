@@ -1,0 +1,167 @@
+/* ==========================================================================
+   VieWeather — motion system (owner: motion)
+   Additive only. Every class is namespaced with vw- and every custom property
+   with --vw- so it can never collide with the app theme in styles/windy.css.
+   ========================================================================== */
+
+:root {
+  /* Motion feel: soft, fluid, premium. Never linear, never bouncy. */
+  --vw-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --vw-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --vw-ripple-tone: 244, 189, 93;
+}
+
+/* --------------------------------------------------------------------------
+   Numbers — tabular figures so counters never jitter while they interpolate.
+   -------------------------------------------------------------------------- */
+.vw-num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* --------------------------------------------------------------------------
+   Reveal — fade + rise when the element mounts or scrolls into view.
+   Driven by @keyframes (not transition) so it can never clobber a component's
+   own transition declarations.
+   -------------------------------------------------------------------------- */
+.vw-reveal {
+  opacity: 0;
+}
+.vw-reveal:not(.is-in) {
+  will-change: opacity, transform;
+}
+.vw-reveal.is-in {
+  animation: vw-rise-in var(--vw-reveal-duration, 0.7s) var(--vw-ease) both;
+  animation-delay: var(--vw-reveal-delay, 0ms);
+}
+
+@keyframes vw-rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--vw-reveal-y, 14px), 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Stagger — children rise one after another.
+   -------------------------------------------------------------------------- */
+.vw-stagger > .vw-stagger-item {
+  opacity: 0;
+}
+.vw-stagger.is-in > .vw-stagger-item {
+  animation: vw-rise-in 0.66s var(--vw-ease) both;
+  animation-delay: calc(
+    var(--vw-stagger-delay, 0ms) + var(--vw-stagger-i, 0) * var(--vw-stagger-gap, 55ms)
+  );
+}
+
+/* --------------------------------------------------------------------------
+   Interaction layer — the wrapper must not create a layout box.
+   -------------------------------------------------------------------------- */
+.vw-interaction {
+  display: contents;
+}
+
+/* Press response, applied for the duration of a press. */
+.vw-press {
+  transform: scale(0.972);
+}
+.weather-app .vw-press,
+.vw-press {
+  transition:
+    transform 0.16s var(--vw-ease),
+    background 0.16s,
+    color 0.16s;
+}
+
+/* Ripple. Lives in a body-level, fixed, non-interactive layer so it can never
+   disturb the layout of the button it belongs to (or the WebGL map). */
+.vw-ripple-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+  contain: layout paint style;
+}
+.vw-ripple {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--vw-size, 90px);
+  height: var(--vw-size, 90px);
+  margin-left: calc(var(--vw-size, 90px) / -2);
+  margin-top: calc(var(--vw-size, 90px) / -2);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(var(--vw-ripple-tone), 0.42) 0%,
+    rgba(var(--vw-ripple-tone), 0.22) 38%,
+    rgba(var(--vw-ripple-tone), 0.08) 62%,
+    rgba(var(--vw-ripple-tone), 0) 72%
+  );
+  transform: translate3d(var(--vw-x, 0px), var(--vw-y, 0px), 0) scale(0.34);
+  opacity: 0.9;
+  animation: vw-ripple-out 0.62s var(--vw-ease) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes vw-ripple-out {
+  0% {
+    transform: translate3d(var(--vw-x, 0px), var(--vw-y, 0px), 0) scale(0.34);
+    opacity: 0.85;
+  }
+  55% {
+    opacity: 0.42;
+  }
+  100% {
+    transform: translate3d(var(--vw-x, 0px), var(--vw-y, 0px), 0) scale(1);
+    opacity: 0;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Ambient weather canvas — full-bleed, above the map, below every panel.
+   -------------------------------------------------------------------------- */
+.vw-ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: var(--vw-ambient-z, 1);
+  opacity: 0;
+  transition: opacity 1.1s var(--vw-ease);
+}
+.vw-ambient.is-ready {
+  opacity: var(--vw-ambient-opacity, 1);
+}
+.vw-ambient > canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion — everything resolves instantly.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .vw-reveal,
+  .vw-stagger > .vw-stagger-item {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  .vw-ripple {
+    display: none !important;
+  }
+  .vw-press {
+    transform: none !important;
+  }
+  .vw-ambient {
+    transition: none;
+  }
+}
