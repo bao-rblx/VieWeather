@@ -1,0 +1,260 @@
+/* map.css - WeatherMap basemap + 3D mode controls (owner: map) */
+
+.map-mode-dock {
+  position: absolute;
+  z-index: 7;
+  left: 346px;
+  top: 112px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background: rgba(18, 34, 48, 0.82);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px rgba(9, 30, 44, 0.38);
+}
+
+.map-mode-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mode-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 40px;
+  border-radius: 9px;
+  background: linear-gradient(
+    180deg,
+    rgba(244, 189, 93, 0.2),
+    rgba(244, 189, 93, 0.05)
+  );
+  box-shadow:
+    inset 0 0 0 1px rgba(244, 189, 93, 0.42),
+    0 2px 12px rgba(244, 189, 93, 0.16);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.map-mode-btn {
+  position: relative;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: #b7cdd8;
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease;
+}
+
+.map-mode-btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #eaf2f4;
+}
+
+.map-mode-btn.selected {
+  color: var(--accent);
+}
+
+.map-mode-btn.mode-3d {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  height: 44px;
+  justify-content: center;
+}
+
+.map-mode-btn.mode-3d small {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  line-height: 1;
+  font-family: "Manrope", sans-serif;
+}
+
+.map-mode-btn.mode-3d.selected {
+  color: var(--accent);
+}
+
+.mode-dock-sep {
+  width: 22px;
+  height: 1px;
+  background: var(--line);
+  margin: 2px 0;
+  align-self: center;
+}
+
+.weather-scale .scale-3d {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (min-width: 1450px) {
+  .map-mode-dock {
+    left: 362px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .map-mode-dock {
+    left: 300px;
+  }
+}
+
+@media (max-height: 850px) and (min-width: 701px) {
+  .map-mode-dock {
+    left: 326px;
+    top: 96px;
+  }
+}
+
+@media (max-width: 700px) {
+  .weather-map .map-mode-dock {
+    left: 16px;
+    right: auto;
+    top: auto;
+    bottom: calc(var(--dock-height) + 58px);
+    flex-direction: row;
+    padding: 3px;
+    gap: 3px;
+    border-radius: 10px;
+  }
+  .weather-map .map-mode-group {
+    flex-direction: row;
+    gap: 1px;
+  }
+  .weather-map .mode-indicator {
+    display: none;
+  }
+  .weather-map .mode-dock-sep {
+    width: 1px;
+    height: 20px;
+    margin: 0 2px;
+  }
+  .weather-map .map-mode-btn {
+    width: 34px;
+    height: 34px;
+  }
+  .weather-map .map-mode-btn.mode-3d {
+    height: 34px;
+    flex-direction: row;
+    gap: 3px;
+  }
+  .weather-map .map-mode-btn.selected {
+    background: rgba(244, 189, 93, 0.16);
+    border-radius: 8px;
+  }
+}
+
+/* ---- vector basemap additions (owner: map) ------------------------------- */
+
+/* City markers collapse to a dot: the gazetteer labels now carry the names and
+   temperatures, so only the selected city keeps its full chip. */
+.weather-app .weather-city.dot-only {
+  width: 15px;
+  height: 15px;
+  max-width: 15px;
+  padding: 0;
+  gap: 0;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  box-shadow: none;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.weather-app .weather-city.dot-only > i {
+  width: 5px;
+  height: 5px;
+  background: #eaf6f9;
+  box-shadow:
+    0 0 0 1.5px rgba(8, 24, 33, 0.55),
+    0 1px 4px rgba(4, 16, 24, 0.7);
+  transition: transform 0.2s ease;
+}
+
+.weather-app .weather-city.dot-only > span,
+.weather-app .weather-city.dot-only > b {
+  display: none;
+}
+
+.weather-app .weather-city.dot-only:hover {
+  width: auto;
+  height: auto;
+  max-width: 150px;
+  padding: 3px 7px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: rgba(18, 34, 48, 0.9);
+  border-radius: 5px;
+  box-shadow: 0 3px 14px rgba(5, 18, 27, 0.55);
+}
+
+.weather-app .weather-city.dot-only:hover > i {
+  transform: scale(0.8);
+}
+
+.weather-app .weather-city.dot-only:hover > span,
+.weather-app .weather-city.dot-only:hover > b {
+  display: block;
+}
+
+.weather-app .weather-city.dot-only:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Active forecast model badge inside the legend card. */
+.weather-scale .map-model-chip {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 7px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+  font-size: 8px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  color: #a7bac5;
+}
+
+.weather-scale .map-model-chip b {
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+}
+
+.weather-scale .map-model-chip span {
+  color: #9fb4c0;
+}
+
+.weather-scale .map-model-chip em {
+  margin-left: auto;
+  font-style: normal;
+  color: #d9964e;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weather-app .weather-city.dot-only,
+  .weather-app .weather-city.dot-only > i {
+    transition: none;
+  }
+}
