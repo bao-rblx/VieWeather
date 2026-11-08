@@ -1,0 +1,981 @@
+
+/* ==========================================================================
+   VieWeather — integrated shell layout (owner: Lead)
+   Adds the insight dock, switch rows and AQI chip on top of the base theme.
+   ========================================================================== */
+
+.weather-app {
+  --dock-height: 268px;
+}
+.weather-app.forecast-collapsed {
+  --dock-height: 84px;
+}
+
+.search-launcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 8px 0 12px;
+  border-radius: 999px;
+  background: rgba(17, 36, 48, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cfe0e8;
+  font-size: 11px;
+  backdrop-filter: blur(10px);
+  transition: background 0.18s, border-color 0.18s, transform 0.18s;
+}
+.search-launcher:hover {
+  background: rgba(26, 52, 68, 0.9);
+  border-color: rgba(244, 189, 93, 0.4);
+}
+.search-launcher kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+  padding: 3px 6px;
+  font: inherit;
+  font-size: 9px;
+  color: #9fb6c2;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+.location-card-reveal {
+  display: block;
+}
+
+.aqi-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px 11px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  color: #dbe8ee;
+  font-size: 10px;
+  text-align: left;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.aqi-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.aqi-chip i {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--aqi-color, #5ec98a);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--aqi-color, #5ec98a) 22%, transparent);
+}
+.aqi-chip b {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.aqi-chip small {
+  margin-left: auto;
+  color: #9db4c1;
+  font-size: 9px;
+}
+
+.panel-switches {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.switch-group > .mini-label {
+  display: block;
+  margin: 0 0 7px 3px;
+  color: #cfe0e8;
+  text-shadow: 0 1px 5px #123;
+}
+.switch-row {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.weather-app .layer-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 9px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(21, 49, 66, 0.7);
+  color: #bed2dc;
+  font-size: 9.5px;
+  backdrop-filter: blur(8px);
+  transition: background 0.18s, border-color 0.18s, color 0.18s, transform 0.18s;
+}
+.weather-app .layer-chip:hover {
+  background: rgba(35, 72, 94, 0.92);
+  color: #eaf4f8;
+}
+.weather-app .layer-chip.selected {
+  background: rgba(244, 189, 93, 0.14);
+  border-color: rgba(244, 189, 93, 0.55);
+  color: #f7d79b;
+}
+.layer-chip.three-d b {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #f4bd5d;
+}
+.layer-chip.three-d.selected b {
+  color: #ffe0a3;
+}
+
+.insight-dock {
+  position: relative;
+  order: 1;
+  height: 168px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(245, 249, 251, 0.035), transparent 60%);
+  border-bottom: 1px solid rgba(205, 225, 235, 0.1);
+  overflow: hidden;
+  transition: height 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s;
+}
+.weather-app.forecast-collapsed .insight-dock,
+.weather-app.forecast-collapsed .dock-body {
+  opacity: 0;
+  pointer-events: none;
+  height: 0 !important;
+  min-height: 0 !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom-color: transparent;
+  overflow: hidden;
+}
+.insight-dock > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px 0 18px;
+  height: 34px;
+  flex: none;
+}
+.dock-tabs {
+  display: flex;
+  gap: 2px;
+  height: 100%;
+  align-items: center;
+}
+.weather-app .dock-tabs button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 11px;
+  border-radius: 6px;
+  font-size: 10px;
+  color: #9fb6c2;
+  transition: color 0.2s, background 0.2s;
+}
+.weather-app .dock-tabs button:hover {
+  color: #e3eff4;
+  background: rgba(255, 255, 255, 0.05);
+}
+.weather-app .dock-tabs button.selected {
+  color: #f6d79c;
+  background: rgba(244, 189, 93, 0.12);
+}
+.weather-app .dock-tabs button.selected::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -7px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.dock-tabs svg {
+  opacity: 0.85;
+}
+.dock-body {
+  flex: 1;
+  min-height: 0;
+  padding: 10px 12px 12px;
+  overflow: hidden;
+}
+.dock-grid {
+  display: grid;
+  gap: 12px;
+  height: 100%;
+}
+.dock-grid.overview-grid {
+  grid-template-columns: 1.5fr 1fr 1.15fr;
+}
+.dock-grid.sky-grid {
+  grid-template-columns: 1fr 1fr 1.15fr;
+}
+.dock-grid.air-grid {
+  grid-template-columns: 1fr 1.25fr;
+}
+.dock-cell {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 9px;
+}
+.dock-cell > .panels-card,
+.dock-cell > section,
+.dock-cell > div {
+  height: 100%;
+}
+.dock-placeholder {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 11px;
+  color: var(--muted);
+}
+.dock-body > .panels-chart {
+  height: 100%;
+}
+
+.seven-day {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100% - 18px);
+  margin-top: 6px;
+}
+.seven-day > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #c4d6df;
+  padding: 3px 2px;
+  border-bottom: 1px solid rgba(205, 225, 235, 0.06);
+}
+.seven-day > div:last-child {
+  border-bottom: 0;
+}
+.seven-day svg {
+  color: #d9d9b8;
+  margin-left: auto;
+  opacity: 0.85;
+}
+.seven-day b {
+  font-weight: 600;
+  color: #f2e2c5;
+  min-width: 30px;
+  text-align: right;
+}
+.seven-day small {
+  color: #7f9aab;
+  min-width: 26px;
+  text-align: right;
+}
+.seven-day > div > span:first-child {
+  min-width: 62px;
+}
+
+.alerts-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 100%;
+  border-radius: 9px;
+  border: 1px dashed rgba(205, 225, 235, 0.14);
+  color: var(--muted);
+  text-align: center;
+  padding: 0 18px;
+}
+.alerts-empty svg {
+  color: #8fcaab;
+  opacity: 0.8;
+}
+.alerts-empty b {
+  font-size: 11px;
+  color: #dce9ef;
+  font-weight: 550;
+}
+.alerts-empty span {
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.atmosphere-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.atmosphere-panel > * {
+  min-width: 0;
+}
+
+@media (min-width: 1450px) {
+  .insight-dock {
+    height: 176px;
+  }
+}
+@media (max-width: 1180px) {
+  .dock-grid.overview-grid {
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .dock-grid.overview-grid > .dock-cell:last-child {
+    display: none;
+  }
+}
+@media (max-height: 850px) and (min-width: 701px) {
+  .weather-app {
+    --dock-height: 248px;
+  }
+  .weather-app.forecast-collapsed {
+    --dock-height: 216px;
+  }
+  .insight-dock {
+    height: 152px;
+  }
+}
+@media (max-width: 1000px) {
+  .insight-dock {
+    left: 20px;
+    right: 18px;
+  }
+  .dock-grid.sky-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dock-grid.sky-grid > .dock-cell:last-child {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .search-launcher span,
+  .search-launcher kbd {
+    display: none;
+  }
+  .weather-app {
+    --dock-height: 236px;
+  }
+  .weather-app.forecast-collapsed {
+    --dock-height: 200px;
+  }
+  .insight-dock {
+    left: 16px;
+    right: 16px;
+    height: 148px;
+  }
+  .dock-tabs button span {
+    display: none;
+  }
+  .weather-app .dock-tabs button {
+    padding: 0 9px;
+  }
+  .dock-grid.overview-grid,
+  .dock-grid.air-grid {
+    grid-template-columns: 1fr;
+  }
+  .dock-grid.overview-grid > .dock-cell:not(:first-child),
+  .dock-grid.air-grid > .dock-cell:not(:first-child) {
+    display: none;
+  }
+  .panel-switches {
+    display: none;
+  }
+}
+
+/* --- forecast dock stack ------------------------------------------------- */
+.forecast-dock {
+  display: flex;
+  flex-direction: column;
+}
+.forecast-dock .time-controls {
+  order: 2;
+  flex: none;
+}
+.forecast-dock .forecast-details {
+  order: 3;
+  flex: none;
+}
+.dock-body {
+  padding: 6px 16px 10px;
+}
+
+/* keep the map clear of the taller dock — only the canvas layers shrink,
+   .weather-map stays full-bleed so the vignette and ambience cover everything */
+.weather-app .full-map-canvas,
+.weather-app .wind-particles {
+  bottom: var(--dock-height);
+  height: calc(100% - var(--dock-height));
+}
+.weather-app .maplibregl-ctrl-bottom-left {
+  bottom: calc(var(--dock-height) + 16px);
+}
+.weather-scale {
+  bottom: calc(var(--dock-height) + 22px);
+}
+.weather-map-controls {
+  bottom: calc(var(--dock-height) + 96px);
+}
+.map-bottom-info {
+  bottom: calc(var(--dock-height) + 10px);
+}
+
+/* move the map's mode dock into the free strip right of the location panel */
+.map-mode-dock {
+  left: 348px;
+  top: 98px;
+}
+@media (min-width: 1450px) {
+  .map-mode-dock {
+    left: 364px;
+  }
+}
+@media (max-width: 1000px) {
+  .map-mode-dock {
+    left: 304px;
+  }
+  .weather-scale,
+  .weather-map-controls {
+    right: 18px;
+  }
+}
+@media (max-height: 850px) and (min-width: 701px) {
+  .map-mode-dock {
+    left: 300px;
+    top: 86px;
+  }
+}
+
+/* --- responsive dock heights -------------------------------------------- */
+@media (max-height: 850px) and (min-width: 701px) {
+  .weather-app {
+    --dock-height: 222px;
+  }
+  .insight-dock {
+    height: 148px;
+  }
+  .forecast-dock .time-controls {
+    height: 70px;
+  }
+}
+@media (max-height: 780px) and (min-width: 701px) {
+  .weather-app {
+    --dock-height: 206px;
+  }
+  .insight-dock {
+    height: 136px;
+  }
+}
+@media (max-width: 760px) {
+  .weather-app {
+    --dock-height: 214px;
+  }
+  .insight-dock {
+    height: 130px;
+  }
+  .dock-body {
+    padding: 6px 12px 10px;
+  }
+}
+
+/* --- dock toolbar ------------------------------------------------------- */
+.dock-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dock-layers {
+  display: flex;
+  gap: 4px;
+}
+.dock-tools .layer-chip {
+  padding: 5px 8px;
+  font-size: 9.5px;
+}
+.dock-sep {
+  width: 1px;
+  height: 16px;
+  background: rgba(205, 225, 235, 0.14);
+}
+.dock-tools .particle-setting {
+  font-size: 9.5px;
+  color: #c2d6e0;
+}
+.dock-collapse {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  color: #a8c0cd;
+  transition: background 0.2s, color 0.2s;
+}
+.dock-collapse:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #eaf2f4;
+}
+
+/* the saved-places block sits under the card without switches now */
+.saved-places {
+  margin-top: 14px;
+}
+
+/* location panel must not overflow the viewport with the taller dock */
+.location-panel {
+  max-height: calc(100dvh - var(--dock-height) - 96px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding-right: 2px;
+}
+.location-panel::-webkit-scrollbar {
+  display: none;
+}
+@media (max-width: 700px) {
+  .location-panel {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* --- height hygiene ------------------------------------------------------ */
+.weather-app .insight-dock {
+  height: 204px;
+}
+.forecast-dock .time-controls {
+  height: 62px;
+}
+.weather-app .daily-preview + .forecast-link {
+  margin-top: 4px;
+}
+.saved-places > div {
+  max-height: none;
+}
+
+/* the attribution sits at the bottom-left of the map area */
+.weather-app .maplibregl-ctrl-bottom-left {
+  bottom: calc(var(--dock-height) + 8px);
+  left: 26px;
+}
+.map-bottom-info {
+  bottom: calc(var(--dock-height) + 6px);
+  left: 28px;
+  right: 26px;
+  justify-content: flex-start;
+}
+.weather-scale {
+  bottom: calc(var(--dock-height) + 22px);
+}
+.weather-map-controls {
+  bottom: calc(var(--dock-height) + 100px);
+}
+
+@media (max-height: 850px) and (min-width: 701px) {
+  .weather-app {
+    --dock-height: 210px;
+  }
+  .weather-app .insight-dock {
+    height: 128px;
+  }
+  .forecast-dock .time-controls {
+    height: 66px;
+  }
+}
+@media (max-height: 780px) and (min-width: 701px) {
+  .weather-app {
+    --dock-height: 196px;
+  }
+  .weather-app .insight-dock {
+    height: 118px;
+  }
+}
+@media (max-width: 760px) {
+  .weather-app {
+    --dock-height: 206px;
+  }
+  .weather-app .insight-dock {
+    height: 132px;
+  }
+}
+
+/* --- compact the panels when they live in the dock ---------------------- */
+.dock-body .panels-detail-cell {
+  padding: 7px 10px;
+  gap: 7px;
+}
+.dock-body .panels-detail-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+}
+.dock-body .panels-detail-cell strong {
+  font-size: 13px;
+}
+.dock-body .panels-detail-cell > div > span,
+.dock-body .panels-detail-cell span {
+  font-size: 8.5px;
+}
+.dock-body .panels-card {
+  height: 100%;
+}
+
+/* keep the attribution out of the way */
+.weather-app .maplibregl-ctrl-attrib.maplibregl-compact {
+  background: rgba(23, 50, 70, 0.55);
+}
+.weather-app .maplibregl-ctrl-attrib.maplibregl-compact-show {
+  padding-right: 4px;
+}
+
+/* dock cells clip cleanly */
+.dock-cell > * {
+  max-height: 100%;
+}
+
+/* --- taller dock: let charts and cards breathe -------------------------- */
+.dock-body .panels-chart,
+.dock-body > .panels-chart {
+  height: 100%;
+}
+.dock-body .panels-sun,
+.dock-body .panels-moon,
+.dock-body .panels-aq,
+.dock-body .panels-alerts {
+  height: 100%;
+}
+@media (max-height: 850px) and (min-width: 701px) {
+  .weather-app {
+    --dock-height: 244px;
+  }
+  .weather-app .insight-dock {
+    height: 180px;
+  }
+}
+@media (max-height: 780px) and (min-width: 701px) {
+  .weather-app {
+    --dock-height: 230px;
+  }
+  .weather-app .insight-dock {
+    height: 166px;
+  }
+}
+
+/* --- dock-specific panel tuning ----------------------------------------- */
+.dock-body .panels-sunarc {
+  padding: 8px 12px 6px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+.dock-body .panels-sunarc-svg {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  max-height: none;
+  margin: 0;
+}
+.dock-body .panels-card,
+.dock-body .panels-sunarc,
+.dock-body .panels-moon,
+.dock-body .panels-aq,
+.dock-body .panels-alerts,
+.dock-body .panels-detail {
+  box-sizing: border-box;
+  max-height: 100%;
+}
+
+/* compact detail grid inside the dock */
+.dock-body .panels-detail {
+  height: 100%;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+/* attribution is compact; nudge it clear of the map-source strip */
+/* small attribution affordance tucked beside the legend, clear of the panel */
+.weather-app .maplibregl-ctrl-bottom-left {
+  left: auto;
+  right: 292px;
+  bottom: 34px;
+}
+.dock-badge-credit {
+  display: none;
+}
+
+/* --- attribution: collapse to the info button, credit lives in the strip -- */
+.weather-app .maplibregl-ctrl-attrib.maplibregl-compact {
+  background: rgba(18, 34, 48, 0.6);
+  border-radius: 20px;
+  padding: 0;
+  min-height: 0;
+}
+/* The visible imagery credit now lives in the map-source strip, so the
+   MapLibre attribution is reduced to a small info affordance that only
+   expands on hover/keyboard focus. */
+.weather-app .maplibregl-ctrl-attrib.maplibregl-compact .maplibregl-ctrl-attrib-inner {
+  display: none;
+}
+.weather-app .maplibregl-ctrl-attrib.maplibregl-compact:hover .maplibregl-ctrl-attrib-inner,
+.weather-app .maplibregl-ctrl-attrib.maplibregl-compact:focus-within .maplibregl-ctrl-attrib-inner {
+  display: block;
+  font-size: 9px;
+  max-width: 420px;
+  white-space: normal;
+}
+.weather-app .maplibregl-ctrl-attrib.maplibregl-compact {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  transition: width 0.25s ease;
+}
+.weather-app .maplibregl-ctrl-attrib.maplibregl-compact:hover,
+.weather-app .maplibregl-ctrl-attrib.maplibregl-compact:focus-within {
+  width: auto;
+  overflow: visible;
+}
+.weather-app .maplibregl-ctrl-bottom-left {
+  left: 348px;
+  bottom: calc(var(--dock-height) + 6px);
+}
+
+/* the sun arc's below-horizon block reads as a dark bar in a short card */
+.dock-body .panels-sun-ground {
+  fill: transparent;
+}
+
+/* map source line gains the imagery credit */
+.map-source .map-credit {
+  font-size: 9px;
+  letter-spacing: 0;
+  color: #a9c0cd;
+  border-left: 1px solid #ffffff40;
+  padding-left: 8px;
+}
+
+/* the taller dock needs the location panel to end a touch higher */
+.location-panel {
+  max-height: calc(100dvh - var(--dock-height) - 92px);
+}
+
+/* --- phone layout fixes ------------------------------------------------- */
+@media (max-width: 760px) {
+  .insight-dock > header {
+    padding: 0 8px 0 10px;
+    height: 32px;
+  }
+  .dock-tools {
+    gap: 4px;
+    min-width: 0;
+  }
+  .dock-tools .particle-setting,
+  .dock-tools .dock-sep {
+    display: none;
+  }
+  .dock-layers {
+    gap: 2px;
+  }
+  .dock-tools .layer-chip {
+    padding: 5px 6px;
+  }
+  .dock-tools .layer-chip span {
+    display: none;
+  }
+  .weather-app .dock-tabs button {
+    padding: 0 8px;
+    gap: 0;
+  }
+  /* the in-map mode dock becomes a compact horizontal strip clear of the scale */
+  .map-mode-dock {
+    left: 12px;
+    bottom: calc(var(--dock-height) + 10px);
+    top: auto;
+  }
+  .weather-scale {
+    right: 12px;
+    width: 168px;
+  }
+  .maplibregl-ctrl-bottom-left {
+    right: 190px;
+    bottom: 30px;
+  }
+  .saved-places {
+    display: none;
+  }
+  .location-panel {
+    max-height: none;
+  }
+}
+@media (max-width: 520px) {
+  .search-launcher {
+    width: 34px;
+    padding: 0;
+    justify-content: center;
+  }
+  .connection-pill span,
+  .connection-pill {
+    font-size: 0;
+    padding: 6px 8px;
+  }
+  .connection-pill i {
+    margin: 0;
+  }
+}
+
+/* --- atmosphere drawer polish ------------------------------------------- */
+.atmosphere-panel .panels-sun-ground {
+  fill: transparent;
+}
+.atmosphere-panel {
+  grid-template-columns: 1.1fr 1fr;
+}
+.atmosphere-panel .panels-sunarc {
+  height: auto;
+  min-height: 236px;
+}
+.atmosphere-panel .panels-sunarc-svg {
+  flex: none;
+  height: auto;
+  width: 100%;
+}
+.atmosphere-panel .panels-moon {
+  height: auto;
+  min-height: 236px;
+}
+/* let the alert stack span the full width when it has cards, otherwise pair it */
+.atmosphere-panel .panels-alerts {
+  grid-column: auto;
+}
+.atmosphere-panel .panels-alerts:not(.panels-alerts-empty) {
+  grid-column: 1 / -1;
+}
+.atmosphere-panel .panels-alerts-empty {
+  grid-column: 2;
+}
+.atmosphere-panel .panels-detail {
+  grid-column: 1 / -1;
+}
+
+/* dock sun arc keeps its footer visible */
+.weather-app .dock-body .panels-sunarc {
+  padding: 6px 12px 4px;
+  justify-content: space-between;
+}
+.weather-app .dock-body .panels-sunarc-svg {
+  flex: 1 1 auto;
+  min-height: 44px;
+}
+.weather-app .dock-body .panels-sunarc-foot {
+  flex: none;
+  padding-top: 2px;
+}
+
+/* --- forecast model picker in the app menu ------------------------------ */
+.menu-models {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin: 6px 0;
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--line);
+}
+.menu-models > .mini-label {
+  grid-column: 1 / -1;
+  margin-bottom: 4px;
+}
+.weather-app .menu-models button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 7px 9px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  text-align: left;
+}
+.weather-app .menu-models button b {
+  font-size: 11px;
+  font-weight: 600;
+}
+.weather-app .menu-models button small {
+  font-size: 8px;
+  color: #8fa7b4;
+  line-height: 1.3;
+}
+.weather-app .menu-models button[aria-pressed="true"] {
+  background: rgba(244, 189, 93, 0.15);
+  border-color: rgba(244, 189, 93, 0.55);
+  color: #f7d79b;
+}
+.weather-app .menu-models button[aria-pressed="true"] small {
+  color: #d8bb84;
+}
+
+/* --- ambient weather belongs to the map, not the whole shell ------------- */
+/* Rain was falling across the header and the forecast dock, which read as
+   scratches over the chrome. Keep the ambience inside the map viewport. */
+.weather-app .vw-ambient {
+  inset: 0 0 var(--dock-height) 0;
+  bottom: var(--dock-height);
+  height: auto;
+}
+@media (max-width: 760px) {
+  .weather-app .vw-ambient {
+    bottom: var(--dock-height);
+  }
+}
+
+/* --- island group chips ------------------------------------------------- */
+/* Hoang Sa and Truong Sa sit alone in the East Sea, so a labelled chip reads
+   better than a dot: there is nothing nearby for them to collide with. */
+.weather-app .weather-city.island-chip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 3px 7px;
+  border-radius: 5px;
+  font-size: 9.5px;
+  font-weight: 500;
+  color: #eaf4f8;
+  background: rgba(18, 40, 58, 0.72);
+  border: 1px solid rgba(244, 189, 93, 0.38);
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(6, 20, 32, 0.9);
+}
+.weather-app .weather-city.island-chip > i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(244, 189, 93, 0.18);
+}
+.weather-app .weather-city.island-chip > b {
+  font-size: 10px;
+  font-weight: 650;
+  color: #f7d79b;
+  flex-basis: 100%;
+  text-align: center;
+}
+.weather-app .weather-city.island-chip:hover {
+  background: rgba(28, 60, 84, 0.9);
+  border-color: rgba(244, 189, 93, 0.7);
+}
+.weather-app .weather-city.island-chip.selected {
+  background: #f7fbf8;
+  color: #253e4a;
+  text-shadow: none;
+  border-color: #f7fbf8;
+}
+.weather-app .weather-city.island-chip.selected > b {
+  color: #b8623f;
+}
